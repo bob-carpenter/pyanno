@@ -1,0 +1,137 @@
+pyAnno 1.0 USER GUIDE
+============================================================
+
+This user guide contains information about getting started
+with pyanno, running simulations and running model estimation.
+
+
+INSTALLATION
+------------------------------------------------------------
+The installation guide is in Install.txt
+
+
+LICENSE
+------------------------------------------------------------
+pyAnno is distributed under the Apache 2.0 license.  See License.txt.
+
+
+DOCUMENTATION
+------------------------------------------------------------
+Functions are documented with code comments explaining
+inputs and outputs.
+
+
+UNIT TESTS
+------------------------------------------------------------
+One way to see how the functions are intended to work
+is to study the unit tests.  These are in the top-level
+file unit_test.py.  There are only unit tests for pyanno.util
+and pyanno.kappa modules.
+
+
+pyanno.kappa:  KAPPA AND OTHER AGREEMENT STATISTICS
+------------------------------------------------------------
+The pyanno.kappa module contains routines to estimate
+interannotator agreement statistics such as simple
+agreement, kappa, and pi.  Documentation for these
+functions is available in the code.
+
+
+pyanno.multinom:  MODEL ESTIMATION
+------------------------------------------------------------
+
+Maximum Likelihood Simulation
+------------------------------------------------------------
+Simulating ordinal data and fitting using EM for the 
+Dawid and Skene multinomial model can be done using:
+
+     % cd $PYANNO_HOME
+     % python examples/mle_sim.py
+
+This will print out (a) sizing for simulated data, (b) a trace of EM
+epoch-by-epoch with log likelihoods, (c) estimated prevalences
+compared to simulated parameter and sample prevalence, (d) estimated
+accuracies compared to simulated values and sample values, and (e)
+estimated categories with simulated cateory indicated.  Here's
+what the output should look like:
+
+     SIZES
+     I= 200
+     J= 5
+     K= 4
+     N= 1000
+     
+     RUNNING EM
+       epoch=     0  log likelihood=-1205.1652   diff=     1.#IO
+       epoch=     1  log likelihood= -965.8246   diff=     1.#IO
+     ....
+       epoch=    86  log likelihood= -945.8426   diff=    0.0011
+     
+     PREVALENCE ESTIMATES
+      k,   sim,  samp,   MLE,  d.sim, d.samp
+      0, 0.038, 0.030, 0.048, +0.010, +0.018
+      1, 0.326, 0.355, 0.327, +0.001, -0.028
+      2, 0.536, 0.515, 0.447, -0.089, -0.068
+      3, 0.100, 0.100, 0.178, +0.078, +0.078
+     
+     ACCURACY ESTIMATES
+       j,k1,k2,   sim,  samp,   mle,  d.sim, d.samp
+       0, 0, 0, 0.802, 0.667, 0.472, -0.330, -0.195
+       0, 0, 1, 0.169, 0.333, 0.424, +0.255, +0.090
+       0, 0, 2, 0.023, 0.000, 0.104, +0.081, +0.104
+       0, 0, 3, 0.006, 0.000, 0.000, -0.006, +0.000
+     ...
+       4, 3, 2, 0.143, 0.200, 0.323, +0.180, +0.123
+       4, 3, 3, 0.809, 0.750, 0.647, -0.163, -0.103
+     
+     CATEGORY ESTIMATES
+         0   0: 0.000   1: 0.000   2:*0.996   3: 0.004 
+         1   0: 0.000   1:*0.986   2: 0.014   3: 0.000
+     ...
+
+Note that you get comparisons with the simulated values as well as the
+sampled values.  This is because, for example, the prevalence of
+categories in the generated sample isn't necessarily the same as in
+the parameter.  The best a model can do is fit the sampled data, so
+the estimated values are usually closer to sampled than simulated
+values.
+
+For the category estimates, an asterisk appears before
+the score of the true label.  For example, item 0 in
+the above has reference category 2, and item 1 has
+reference category 1. 
+
+
+Maximum a Posteriori (MAP) Estimation Simulation
+------------------------------------------------------------
+Runs the same way as the MLE estimation simulation,
+
+     % cd $PYANNO_HOME
+     % python examples/map_sim.py
+
+In addition to printing log likelihoods, you also get log priors and
+the sums during the run.  The output prevalence, accuracy and
+categories are as before.
+
+
+Real Data Estimation
+------------------------------------------------------------
+pyanno also ships with demos for the Rzhetsky et al. (2009)
+annotation paper.  The code reads the data out of a CSV file
+and populates the inputs for estimation.  This can be done
+with MLE or MAP estimates as follows:
+
+     % cd $PYANNO_HOME
+
+and then for MLE:
+
+     % python examples/rzhetsky2009/mle.py examples/rzhetsky2009/data/p85.csv
+
+or for MAP:
+
+     % python examples/rzhetsky2009/map.py examples/rzhetsky2009/data/p85.csv
+
+There are also data files e85.csv and f85.csv, which have
+slightly differently shaped data.
+
+     

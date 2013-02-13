@@ -1,0 +1,60 @@
+pyAnno 1.0 INSTALLATION
+============================================================
+
+pyAnno can be installed on any platform that runs Python, including
+all recent flavors of Windows, Mac, and Linux.  Here's what you
+need to do:
+
+0. Install Dependencies:
+
+   - Python 2.6
+     http://www.python.org/
+
+   - numpy 1.4
+     http://numpy.scipy.org/
+
+   - pymc 2.1
+     http://code.google.com/p/pymc/
+
+   The Enthought Python distribution includes Python 2.6 and numpy 1.4
+   and makes installing pymc easy.  It is free for academics and
+   available for a fee for others from:
+
+   http://www.enthought.com/products/getepd.php
+
+   I couldn't get the 64-bit Python to work with numpy and pymc, but
+   your mileage may vary.
+
+
+1. Create Directory $PYANNO_DIR for pyanno
+
+
+2. Download pyanno-1.0.zip into $PYANNO_DIR
+
+
+3. Unpack pyanno-1.0.zip into $PYANNO_DIR
+
+   You can do this from the Explorer in Windows by:
+       a. navigating to $PYANNO_DIR, 
+       b. right clicking on pyanno-1.0.zip,
+       c. selecting [extract all]
+       d. entering $PYANNO_DIR path or browsing for it
+       e. click [Extract] button
+
+   Or from a shell with:
+       % cp pyanno-1.0.zip $PYANNO_DIR
+       % cd $PYANNO_DIR
+       % unzip pyanno-1.0.zip
+
+   We like the Cygwin distribution to get tools like
+   unzip in Windows: http://www.cygwin.com/
+
+
+4. Install pyanno into Python:
+   This you'll need to do from a shell:
+
+       % cd pyanno-1.0
+       % python setup.py install
+
+
+   

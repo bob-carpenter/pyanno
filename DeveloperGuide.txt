@@ -1,0 +1,103 @@
+pyAnno 1.0 DEVELOPER GUIDE
+============================================================
+
+VERSION CONTROL ORGANIZATION
+------------------------------------------------------------
+pyAnno uses Subversion (SVN) for version control.
+
+Anonymous Checkout
+----------------------------------------
+Check the project our from directory $PYANNO_SVN_ROOT (this
+doesn't need to be an environment variable; the notation is
+just for convenience in the doc).
+
+     % cd $PYANNO_SVN_ROOT
+
+     % svn co https://aliasi.devguard.com/svn/sandbox/ProjectName
+
+     % cd trunk
+
+From now on, we'll assume $PYANNO_HOME is the directory
+$PYANNO_SVN_ROOT/trunk.
+
+
+
+BUILD AND INSTALL
+------------------------------------------------------------
+You only need to build and install if you want to run
+the contained scripts, because they import the packages
+assuming they are installed.  Unit testing, for instance,
+doesn't require a build or install.
+
+Building pyanno
+----------------------------------------
+To build a gzipped tarball (suffix .tar.gz)
+and zipped archive (suffix .zip), use:
+
+    % cd $PYANNO_HOME
+    % python setup.py sdist --formats=gztar,zip
+
+The result will be to create two distribution
+files:
+
+    $PYANNO_HOME/dist/pyanno-1.0.tar.gz
+                     /pyanno-1.0.zip
+
+Developer Installation of pyanno
+----------------------------------------
+After following the build instructions above,
+
+    % cd $PYANNO_HOME
+    % python setup.py install
+
+End-user installation instructions in Install.txt.
+
+
+Scripted Operation
+----------------------------------------
+There are Windows batch (.bat) and Unix shell (.sh) scripts
+to build and install.  
+
+On Windows:
+
+     % cd $PYANNO_HOME
+     % build.bat
+
+On Unix:
+
+     % cd $PYANNO_HOME
+     % sh build.sh
+
+
+
+UNIT TESTS
+------------------------------------------------------------
+The unit tests may be run from the included script,
+which contais all the unit tests:
+
+     % cd $PYANNO_HOME
+
+     % python unit_test.py
+
+
+
+CODING CONVENTIONS
+------------------------------------------------------------
+We're trying to follow the standard Python guidelines.
+
+For code itself:
+
+    Guido von Rossum and Barry Warsaw.
+    Style Guide for Python Code.  
+    Python Enhancment Proposal (PEP) 8.
+    http://www.python.org/dev/peps/pep-0008/
+
+For docstring comments in the code:
+
+    David Goodger and Guido von Rossum.
+    Docstring Coventions.
+    Python Enhancment Proposal (PEP) 257.
+    http://www.python.org/dev/peps/pep-0257/
+
+
+

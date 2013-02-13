@@ -1,0 +1,148 @@
+pyanno 1.0: MODEL DEFINITIONS
+============================================================
+
+DAWID AND SKENE'S MULTINOMIAL MODEL W. ARBITRARY DESIGN
+------------------------------------------------------------
+
+Our first model generalizes the model in (Dawid and Skene 1979) to
+arbitrary designs, including that of (Rzhetsky et al. 2009).  There
+are no priors, so estimation is necessarily through maximum
+likelihood.
+
+Data
+--------------------
+I                 number of items being annotated
+J                 number of annotators
+N                 number of annotations
+K                 number of categories
+jj[n] in 0:(J-1)  annotator for annotation n in 1:N
+ii[n] in 0:(I-1)  item for annotation n in 1:N
+y[n]  in 0:(K-1)  category for annotation n in 1:N
+
+Parameters
+--------------------
+z[i]  in 1:K                 (latent) category for item i in 1:I
+pi[k] in [0,1]               prevalence of category k in 1:K; 
+                                 SUM_k pi[k] = 1
+theta[j][kRef][k] in [0,1]   probability of annotator j in 1:J 
+                                 returning category k in 1:K for 
+                                 item of true category kRef; 
+                                 SUM_k theta[j,kRef,k] = 1
+Model
+--------------------
+z[i] ~ Categorical(pi)
+y[n] ~ Categorical(theta[ jj[n] ][ z[ii[n]] ])
+
+Complete Data Likelihood
+--------------------
+p(y,z|theta,pi)
+    = p(z|pi) * p(y|theta,z)
+    = PROD_{i in 1:I} p(z[i]|pi)
+      * PROD_{n in 1:N} p(y[n]|theta,z)
+    = PROD_{i in 1:K} pi[ z[i] ]
+      * PROD_{n in 1:N} theta[ jj[n] ][ z[ii[n]] ][ y[n] ]
+
+Observed Data Likelihood
+--------------------
+p(y|theta,pi) = INTEGRAL_z p(y,z|theta,pi) dz
+
+Maximum Likelihood Estimate (MLE)
+--------------------
+(theta*,pi*) = ARGMAX_{theta,pi} p(y|theta,pi)
+
+
+
+DAWID AND SKENE'S MODEL WITH PRIORS
+------------------------------------------------------------
+The second model adds priors to the Dawid and Skene model, which
+corresponds to the full Model B in (Rzhetsky et al. 2009).
+
+Priors
+--------------------
+This model basically adds Dirichlet priors for the categorical
+parameters.  There is one prior beta for prevalence pi, and
+K priors alpha[k] for annotator response for items of reference
+category k.  
+
+   beta in (0,infty)^K
+
+   alpha[k] in (0,infty)^K
+
+For maximum a posteriori fitting, all values must be 
+greater than or equal to 1.0.
+
+
+Model
+--------------------
+In BUGS-like notation, we add the following:
+
+pi ~ Dirichlet(beta)
+
+for (j in 1:J) {
+    for (k in 1:K) {
+    	theta[j][k] ~ Dirichlet(alpha[k])
+    }
+}
+
+Complete Likelihood
+--------------------
+We just add in terms for the priors to the data likelihood
+above, giving us:
+
+p(y,z,theta,pi|alpha,beta)
+    = p(theta|alpha) * p(pi|beta) * p(y,z|theta,pi)
+
+where
+
+     p(theta|alpha) = Dirichlet(theta|alpha)
+
+and
+
+     p(theta|alpha) 
+         = PROD_{j in 1:J} PROD_{k in 1:K} 
+	     Dirichlet(theta[j][k]|alpha[k]).
+
+EM ALGORITHM
+------------------------------------------------------------
+
+All of the expecation-maximization (EM) algorithms work the
+same way for computing either maximum likelihood estimates (MLE)
+or maximum a posterioiri (MAP estimates).  The basic idea is
+to treat the the unknown category labels as missing data,
+alternating between estimating the category expecations and
+then maximizing the parameters for those expectations.
+
+0. Initialize parameters (pi(0),theta(0))
+
+1. for n = 1; ; ++n
+
+   1.a  (E Step)
+        Calculate observed data likelihood given previous params
+             p(cat|pi(n-1),theta(n-1),y)
+
+   1.b  (M Step)
+        Set next params pi(n), theta(n) to maximize observed 
+        data likelihood w.r.t. previous params
+         
+   1.c  (convergence test)
+        if log likelihood doesn't change much, exit
+
+
+
+
+
+REFERENCES
+------------------------------------------------------------
+
+Artstein, Ron and Massimo Poesio. 2008. Inter-coder agreement for
+computational linguistics.  Computational Linguistics Journal
+34(4):555--596.
+
+Dawid, A. P. and A. M. Skene. 1979.  Maximum likelihood estimation of
+observer error-rates using the EM algorithm.  Applied Statistics,
+28(1):20--28.
+
+Rzhetsky, A., H. Shatkay, and W. J. Wilbur.  How to get the most out
+of your curation effort.  PLoS Computational Biology. 5(5). 2009.  
+doi: 10.1371/journal.pcbi.1000391
+
