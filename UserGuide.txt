@@ -129,7 +129,7 @@ and then for MLE:
 
 or for MAP:
 
-     % python examples/rzhetsky_2009/map.py examples/rzhetsky_2009/data/p85.csv
+     % python examples/rzhetsky_2009/map.py examples/rzhetsky2009/data/p85.csv
 
 There are also data files e85.csv and f85.csv, which have
 slightly differently shaped data.
