@@ -1,7 +1,7 @@
 # Library Module
 import math
+import random
 import numpy
-import pymc
 from .util import *
 
 def mle(item,
@@ -403,11 +403,46 @@ def map_em(item,
             for k in Ks:
                 prob_norm(accuracy[j][k])
 
+# redef of pymc functions because pymc is too hard to install
+# .dirichlet_like because can't install pymc
+def dirichlet_like(theta,alpha):
+    ll = 0.0
+    for k in range(len(alpha)):
+        ll = ll + (alpha[i] - 1.0) * math.log(theta[i])
+    sum_alpha = 0.0
+    for k in range(len(alpha)):
+        sum_alpha = sum_alpha + alpha[k]
+    ll = ll + math.lgamma(sum_alpha)
+    for k in range(len(alpha)):
+        ll = ll + math.lgamma(alpha[k])
+    return ll
+
+# redef of pymc.rcategorical
+def rcategorical(theta):
+    u = random.uniform(0,1)
+    cum_sum = 0
+    for k in range(len(theta)):
+        cum_sum = cum_sum + theta[k]
+        if u < cum_sum:
+            return k
+    return len(theta) - 1
+
+def rdirichlet(alpha): 
+    theta = alloc_vec(len(alpha),0.0)
+    for i in range(len(alpha)):
+        theta[i] = random.gammavariate(alpha[i],1.0)
+    sum_theta = 0.0
+    for i in range(len(alpha)):
+        sum_theta = sum_theta + theta[i]
+    for i in range(len(alpha)):
+        theta[i] = theta[i] / sum_theta
+    return theta
+
 
 # defined to prevent underflows resulting from theta[k] = 0.0, causing nans:
 # >>> theta = numpy.array([ 0.75300156,  0.24474181,  0.00225663])
 # >>> alpha = numpy.array([4.0,2.0,1.0,1.0])
-# >>> pymc.dirichlet_like(theta,alpha)
+# >>> dirichlet_like(theta,alpha)
 # nan
 def dir_ll(theta,alpha):
     delta = 0.0000000001
@@ -415,7 +450,7 @@ def dir_ll(theta,alpha):
         for k in range(len(theta)):
             # subtract delta, but with delta min
             theta[k] = max(delta, theta[k] - delta) 
-        ll = pymc.dirichlet_like(theta,alpha)
+        ll = dirichlet_like(theta,alpha)
         if not math.isnan(ll) and not math.isinf(ll):
             return ll
 

@@ -125,11 +125,11 @@ with MLE or MAP estimates as follows:
 
 and then for MLE:
 
-     % python examples/rzhetsky2009/mle.py examples/rzhetsky2009/data/p85.csv
+     % python examples/rzhetsky_2009/mle.py examples/rzhetsky_2009/data/p85.csv
 
 or for MAP:
 
-     % python examples/rzhetsky2009/map.py examples/rzhetsky2009/data/p85.csv
+     % python examples/rzhetsky_2009/map.py examples/rzhetsky_2009/data/p85.csv
 
 There are also data files e85.csv and f85.csv, which have
 slightly differently shaped data.

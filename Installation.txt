@@ -13,17 +13,13 @@ need to do:
    - numpy 1.4
      http://numpy.scipy.org/
 
-   - pymc 2.1
-     http://code.google.com/p/pymc/
+   The Enthought Python distribution includes Python 2.6 and numpy 1.4.
+   It is free for academics and available for a fee for others from:
 
-   The Enthought Python distribution includes Python 2.6 and numpy 1.4
-   and makes installing pymc easy.  It is free for academics and
-   available for a fee for others from:
+       http://www.enthought.com/products/getepd.php
 
-   http://www.enthought.com/products/getepd.php
-
-   I couldn't get the 64-bit Python to work with numpy and pymc, but
-   your mileage may vary.
+   I couldn't get the 64-bit Python to work with numpy, but your
+   mileage may vary.
 
 
 1. Create Directory $PYANNO_DIR for pyanno
