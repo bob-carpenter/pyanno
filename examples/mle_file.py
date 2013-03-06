@@ -85,7 +85,7 @@ for i in range(I):
     print ""
 
 print "ITEMS"
-abc = 0
+c = 0
 for xyz in item_id2sym:
-    print abc, xyz
-    abc+=1
+    print c, xyz
+    c+=1
