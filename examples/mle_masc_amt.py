@@ -77,15 +77,14 @@ for j in range(J):
                 format(j,k1,k2,accuracy_mle[j][k1][k2])
 
 print "CATEGORY ESTIMATES"
-for i in range(I):
-    print "{0:5d}".format(i),
+i = 0
+M = len(item_id2sym) - 1
+for xyz in item_id2sym:
+    print "{0:2d},".format(i),
+    print "{0:4s}".format(xyz),
     for k in range(K):
         print " {0:2d},{1:5.3f}".format(k,cat_mle[i][k]),
-#        print " {0:8s},{1:5.3f}".format(item_id2sym[k],cat_mle[i][k]),
     print ""
+    if i < M:
+        i+=1
 
-print "ITEMS"
-c = 0
-for xyz in item_id2sym:
-    print c, xyz
-    c+=1
