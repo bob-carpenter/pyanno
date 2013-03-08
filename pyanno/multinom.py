@@ -408,7 +408,7 @@ def map_em(item,
 def dirichlet_like(theta,alpha):
     ll = 0.0
     for k in range(len(alpha)):
-        ll = ll + (alpha[i] - 1.0) * math.log(theta[i])
+        ll = ll + (alpha[k] - 1.0) * math.log(theta[k])
     sum_alpha = 0.0
     for k in range(len(alpha)):
         sum_alpha = sum_alpha + alpha[k]
