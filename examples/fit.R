@@ -8,7 +8,7 @@
 
 
 ### READ DATA
-data <- read.csv("test.csv");
+data <- read.table("test.csv",sep='\t');
 ii <- data[[1]];
 jj <- data[[2]];
 y <- data[[3]];
@@ -34,7 +34,8 @@ epoch <- 1;
 min_relative_diff <- 1E-8;
 last_log_likelihood = - Inf;
 E_z <- array(1/K, c(I,K));
-for (epoch in 1:20) {
+MAX_EPOCHS <- 100;
+for (epoch in 1:MAX_EPOCHS) {
   ### E step 
   for (i in 1:I)
     E_z[i,] <- pi_hat;
@@ -87,7 +88,7 @@ for (epoch in 1:20) {
 # theta_hat[j,k,k']:  estimate of theta[j,k,k']
 # E_z[i,k]:   probabilistic estimate of z[i], Pr[z[i]==k | data] 
 
-pi_out <- array(0,dim=c(K,2),row.names=FALSE,dimnames=list(NULL,c("category","prob")));
+pi_out <- array(0,dim=c(K,2),dimnames=list(NULL,c("category","prob")));
 pos <- 1;
 for (k in 1:K) {
   pi_out[pos,] <- c(k,pi_hat[k]);

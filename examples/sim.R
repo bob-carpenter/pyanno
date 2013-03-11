@@ -55,4 +55,4 @@ for (i in 1:I) {
   }
  }
 
-write.csv(cbind(ii,jj,y), file="test.csv", row.names=FALSE);
+write.table(cbind(ii,jj,y), file="sim.tsv", sep='\t', col.names=FALSE, row.names=FALSE);
