@@ -121,16 +121,3 @@ item	category	prob
 2	3	0.991973371497031
 3	1	3.28892862843673e-86
 
-It is possible to script R programs from the command line.
-I'll be around tomorrow (after I wake up) if you want
-to talk.
-
-Sorry again for all the confusion with Python.  I 
-should've just recoded it in R from the get-go.
-
-If you have all the data in the appropriate input format
-already, I can help running it and generating pdfs/pngs.
-
-- Bob
-
-
