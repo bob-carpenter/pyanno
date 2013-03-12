@@ -6,9 +6,11 @@
 # jj[N] in 1:J:  annotator for label n
 # y[N] in 1:K:   category for label n
 
+library('MCMCpack');
 
 ### READ DATA
-data <- read.table("test.csv",sep='\t');
+data <- read.table("add-v.csv",sep=',');
+print("read data");
 ii <- data[[1]];
 jj <- data[[2]];
 y <- data[[3]];
@@ -46,12 +48,14 @@ for (epoch in 1:MAX_EPOCHS) {
     E_z[i,] <- E_z[i,] / sum(E_z[i,]);
 
   ### M step
-  pi_hat <- rep(0,K);
+  beta <- 0.01; 
+  pi_hat <- rep(beta,K);          # add beta smoothing on pi_hat
   for (i in 1:I)
     pi_hat <- pi_hat + E_z[i,];
   pi_hat <- pi_hat / sum(pi_hat);
 
-  count <- array(0,c(J,K,K));
+  alpha <- 0.01;
+  count <- array(alpha,c(J,K,K)); # add alpha smoothing for theta_hat
   for (n in 1:N)
     for (k in 1:K)
       count[jj[n],k,y[n]] <- count[jj[n],k,y[n]] + E_z[ii[n],k];
@@ -82,6 +86,13 @@ for (epoch in 1:MAX_EPOCHS) {
   last_log_likelihood <- log_likelihood;
 }
 
+
+# sanity checks
+voted_prevalence <- rep(0,K);
+for (k in 1:K)
+  voted_prevalence[k] <- sum(y == k);
+voted_prevalence <- voted_prevalence / sum(voted_prevalence);
+print(paste("voted prevalence=",voted_prevalence));
 
 # estimands
 # pi_hat[k]:  estimate of pi[k]
